@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'DocsIQ — Chat with your documents',
   description: 'Upload dokumen PDF atau TXT, lalu tanya apa saja tentang isinya. Powered by Groq & LLaMA 3.1.',
-  icons: { icon: '/favicon.ico' },
+  icons: { icon: '/docsiq.png' },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
