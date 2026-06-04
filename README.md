@@ -188,4 +188,4 @@ git push origin main
 
 ---
 
-Built with ♥ by [@ikramramadhana](https://github.com/ikramramadhana)
+Built by [@ikramramadhana](https://github.com/ikramramadhana)
