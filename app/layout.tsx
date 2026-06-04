@@ -6,9 +6,13 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'DocsIQ — Chat with your documents',
-  description: 'Upload dokumen PDF atau TXT, lalu tanya apa saja tentang isinya.',
+  description: 'Upload dokumen PDF atau TXT, lalu tanya apa saja tentang isinya. Powered by Groq & LLaMA 3.1.',
   icons: {
-    icon: '/docsiq.png',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    apple: '/favicon-512.png',
   },
 }
 

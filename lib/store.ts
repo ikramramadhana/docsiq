@@ -132,3 +132,33 @@ export async function getStatsPersist() {
     sources: [...new Set(chunks.map(c => c.source))],
   }
 }
+
+export async function deleteSourcePersist(source: string): Promise<void> {
+  if (hasFirebase()) {
+    const { getDb } = await import('./firebase')
+    const db = getDb()
+    const snapshot = await db.collection(COLLECTION).where('source', '==', source).get()
+    const batch = db.batch()
+    snapshot.docs.forEach(doc => batch.delete(doc.ref))
+    await batch.commit()
+    return
+  }
+  const chunks = globalStore._docsiq_chunks!
+  const vectors = globalStore._docsiq_vectors!
+  const indices = chunks.map((c, i) => c.source === source ? i : -1).filter(i => i >= 0).reverse()
+  indices.forEach(i => { chunks.splice(i, 1); vectors.splice(i, 1) })
+}
+
+export async function clearAllPersist(): Promise<void> {
+  if (hasFirebase()) {
+    const { getDb } = await import('./firebase')
+    const db = getDb()
+    const snapshot = await db.collection(COLLECTION).get()
+    const batch = db.batch()
+    snapshot.docs.forEach(doc => batch.delete(doc.ref))
+    await batch.commit()
+    return
+  }
+  globalStore._docsiq_chunks = []
+  globalStore._docsiq_vectors = []
+}

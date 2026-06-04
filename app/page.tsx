@@ -23,6 +23,8 @@ export default function Home() {
   const [dragOver, setDragOver] = useState(false)
   const [showSources, setShowSources] = useState<number | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [deleting, setDeleting] = useState<string | null>(null)
+  const [confirmClear, setConfirmClear] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
   const mobileFileRef = useRef<HTMLInputElement>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
@@ -187,12 +189,43 @@ export default function Home() {
             {/* Active docs */}
             {stats.sources.length > 0 && (
               <div>
-                <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-[0.1em] mb-3">Dokumen Aktif</p>
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-[0.1em]">Dokumen Aktif</p>
+                  {confirmClear ? (
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[10px] text-red-400">Yakin?</span>
+                      <button onClick={async () => { setDeleting('__all__'); setConfirmClear(false); await fetch('/api/delete', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'clear' }) }); await fetchStats(); setMessages(prev => [...prev, { role: 'assistant', content: 'Semua dokumen telah dihapus.' }]); setDeleting(null) }} className="text-[10px] text-red-400 hover:text-red-300 font-semibold">Ya</button>
+                      <button onClick={() => setConfirmClear(false)} className="text-[10px] text-zinc-600 hover:text-zinc-400">Batal</button>
+                    </div>
+                  ) : (
+                    <button onClick={() => setConfirmClear(true)} className="text-[10px] text-zinc-700 hover:text-red-400 transition-colors flex items-center gap-1">
+                      <svg width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                      Clear all
+                    </button>
+                  )}
+                </div>
                 <div className="space-y-1.5">
                   {stats.sources.map(s => (
-                    <div key={s} className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs" style={{ background: 'rgba(255,255,255,0.03)', border: '0.5px solid rgba(255,255,255,0.06)' }}>
+                    <div key={s} className="group flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs transition-all" style={{ background: 'rgba(255,255,255,0.03)', border: '0.5px solid rgba(255,255,255,0.06)' }}>
                       <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 shadow-[0_0_6px_rgba(52,211,153,0.6)]" />
-                      <span className="text-zinc-400 truncate">{s}</span>
+                      <span className="text-zinc-400 truncate flex-1">{s}</span>
+                      <button
+                        onClick={async () => {
+                          setDeleting(s)
+                          await fetch('/api/delete', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', source: s }) })
+                          await fetchStats()
+                          setMessages(prev => [...prev, { role: 'assistant', content: `Dokumen **${s}** telah dihapus.` }])
+                          setDeleting(null)
+                        }}
+                        disabled={deleting !== null}
+                        className="opacity-0 group-hover:opacity-100 text-zinc-600 hover:text-red-400 transition-all disabled:opacity-30"
+                        title="Hapus dokumen"
+                      >
+                        {deleting === s
+                          ? <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+                          : <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                        }
+                      </button>
                     </div>
                   ))}
                 </div>

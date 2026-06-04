@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background -->
+  <rect width="512" height="512" rx="112" fill="#07070d"/>
+  
+  <!-- Outer ring -->
+  <circle cx="256" cy="220" r="136" fill="none" stroke="#6d28d9" stroke-width="8"/>
+  
+  <!-- Doc shape inside ring -->
+  <rect x="188" y="148" width="136" height="168" rx="16" fill="#6d28d9" opacity="0.25"/>
+  <rect x="188" y="148" width="136" height="168" rx="16" fill="none" stroke="#a78bfa" stroke-width="6"/>
+  
+  <!-- Fold corner -->
+  <path d="M256 148 L324 216 L256 216 Z" fill="#07070d"/>
+  <path d="M256 148 L324 216 L256 216" fill="none" stroke="#a78bfa" stroke-width="6"/>
+  
+  <!-- Lines on doc -->
+  <line x1="204" y1="240" x2="292" y2="240" stroke="#c4b5fd" stroke-width="10" stroke-linecap="round"/>
+  <line x1="204" y1="268" x2="280" y2="268" stroke="#c4b5fd" stroke-width="8" stroke-linecap="round" opacity="0.6"/>
+  <line x1="204" y1="294" x2="264" y2="294" stroke="#c4b5fd" stroke-width="8" stroke-linecap="round" opacity="0.35"/>
+  
+  <!-- Spark dots around ring -->
+  <circle cx="120" cy="128" r="12" fill="#7c3aed"/>
+  <circle cx="392" cy="128" r="8" fill="#4338ca"/>
+  <circle cx="76" cy="240" r="8" fill="#6d28d9"/>
+  <circle cx="430" cy="256" r="12" fill="#7c3aed"/>
+  <circle cx="148" cy="360" r="6" fill="#4338ca" opacity="0.7"/>
+  <circle cx="370" cy="355" r="8" fill="#6d28d9" opacity="0.7"/>
+  
+  <!-- IQ text bottom -->
+  <text x="256" y="420" text-anchor="middle" fill="#a78bfa" font-size="68" font-weight="700" font-family="Arial, sans-serif" letter-spacing="6">IQ</text>
+</svg>
